@@ -44,14 +44,14 @@ lazbuild --lazarusdir=%{_libdir}/lazarus \
 	-B project_peach.lpi project_pea.lpi project_gwrap.lpi
 
 %install
-mkdir -p %{buildroot}%{_bindir}
-mkdir -p %{buildroot}%{_datadir}/%{name}
+install -d -m755 %{buildroot}%{_bindir}
+install -d -m755 %{buildroot}%{_datadir}/%{name}
 rm -rf res/icons
 cp -r res %{buildroot}%{_datadir}/%{name}
 cp %{S:1} %{buildroot}%{_datadir}/%{name}/res
 
 #install helper apps
-mkdir -p %{buildroot}%{_datadir}/%{name}/res/{7z,upx}
+install -d -m755 %{buildroot}%{_datadir}/%{name}/res/{7z,upx}
 ln -s %{_bindir}/7z  %{buildroot}%{_datadir}/%{name}/res/7z
 ln -s %{_bindir}/upx  %{buildroot}%{_datadir}/%{name}/res/upx
 
@@ -62,12 +62,24 @@ ln -s %{_datadir}/%{name}/%{name} %{buildroot}%{_bindir}/%{name}
 install pealauncher %{buildroot}%{_datadir}/%{name}/res
 ln -s %{_datadir}/%{name}/res/pealauncher %{buildroot}%{_bindir}/pealauncher
 
-mkdir -p %{buildroot}%{_datadir}/applications
+install -d -m755 %{buildroot}%{_datadir}/applications
 install -m 0644 %{S:2} %{buildroot}%{_datadir}/applications/
 
-mkdir -p %{buildroot}%{_iconsdir}/hicolor/256x256/apps
+install -d -m755 %{buildroot}%{_iconsdir}/hicolor/256x256/apps
 icotool -x -i 1 -o %{buildroot}%{_iconsdir}/hicolor/256x256/apps/%{name}.png %{name}.ico
 rm -rf %{buildroot}%{_datadir}/%{name}/res/icons
+
+# unrar
+install -d -m755 %{buildroot}%{_datadir}/%{name}/res/unrar
+pushd %{buildroot}/%{_datadir}/%{name}/res/unrar
+ln -sf /usr/bin/unrar-nonfree unrar-nonfree
+popd
+
+# unace
+install -d -m755 %{buildroot}%{_datadir}/%{name}/res/unace
+pushd %{buildroot}/%{_datadir}/%{name}/res/unace
+ln -sf /usr/bin/unace unace
+popd
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
