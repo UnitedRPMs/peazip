@@ -84,8 +84,8 @@ popd
 
 # Aditional plugins
 mv -f %{_builddir}/%{name}-%{version}.src/lpaq %{buildroot}/%{_datadir}/%{name}/res/
-mf -f %{_builddir}/%{name}-%{version}.src/paq %{buildroot}/%{_datadir}/%{name}/res/ 
-mf -f %{_builddir}/%{name}-%{version}.src/quad %{buildroot}/%{_datadir}/%{name}/res/
+mv -f %{_builddir}/%{name}-%{version}.src/paq %{buildroot}/%{_datadir}/%{name}/res/ 
+mv -f %{_builddir}/%{name}-%{version}.src/quad %{buildroot}/%{_datadir}/%{name}/res/
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
