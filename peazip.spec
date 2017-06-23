@@ -84,6 +84,7 @@ popd
 # 7zip
 install -d -m755 %{buildroot}%{_datadir}/%{name}/res/7z
 pushd %{buildroot}/%{_datadir}/%{name}/res/7z
+rm -f 7z
 ln -sf /usr/bin/7za 7z
 popd
 
