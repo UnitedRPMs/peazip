@@ -81,6 +81,12 @@ pushd %{buildroot}/%{_datadir}/%{name}/res/unace
 ln -sf /usr/bin/unace unace
 popd
 
+# 7zip
+install -d -m755 %{buildroot}%{_datadir}/%{name}/res/7z
+pushd %{buildroot}/%{_datadir}/%{name}/res/7z
+ln -sf /usr/bin/7za 7z
+popd
+
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
