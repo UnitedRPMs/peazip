@@ -12,6 +12,7 @@ Source0:	http://download.sourceforge.net/%{name}/%{name}-%{version}.src.zip
 # configure to run in users home appdata
 Source1:	altconf.txt
 Source2:	%{name}.desktop
+Source3:	http://www.peazip.org/downloads/additional/peazip_additional_formats_plugin-2.LINUX.ALL.tar.gz
 BuildRequires:	dos2unix
 BuildRequires:	lazarus >= 1.2.0
 BuildRequires:	qt4pas-devel
@@ -19,7 +20,7 @@ BuildRequires:	qt-devel
 BuildRequires:	qtwebkit-devel
 BuildRequires:	icoutils
 BuildRequires:	desktop-file-utils
-Requires:	p7zip
+Requires:	p7zip p7zip-plugins
 Requires:	upx >= 3.09
 Requires:	desktop-file-utils
 Recommends:	unrar
@@ -31,7 +32,7 @@ portable GUI for many Open Source technologies like 7-Zip, FreeArc, PAQ,
 UPX...
 
 %prep
-%setup -q -n %{name}-%{version}.src
+%setup -q -n %{name}-%{version}.src -a3
 chmod +w res/lang
 dos2unix readme*
 
@@ -81,12 +82,10 @@ pushd %{buildroot}/%{_datadir}/%{name}/res/unace
 ln -sf /usr/bin/unace unace
 popd
 
-# 7zip
-install -d -m755 %{buildroot}%{_datadir}/%{name}/res/7z
-pushd %{buildroot}/%{_datadir}/%{name}/res/7z
-rm -f 7z
-ln -sf /usr/bin/7za 7z
-popd
+# Aditional plugins
+mv -f %{_builddir}/%{name}-%{version}.src/lpaq %{buildroot}/%{_datadir}/%{name}/res/
+mf -f %{_builddir}/%{name}-%{version}.src/paq %{buildroot}/%{_datadir}/%{name}/res/ 
+mf -f %{_builddir}/%{name}-%{version}.src/quad %{buildroot}/%{_datadir}/%{name}/res/
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
