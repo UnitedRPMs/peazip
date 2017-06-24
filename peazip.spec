@@ -1,6 +1,9 @@
 %define debug_package %{nil}
 %global _iconsdir %{_datadir}/icons
 
+# BUILD GTK
+%bcond_without gtk
+
 Summary:	File and archive manager
 Name:		peazip
 Version:	6.4.1
@@ -15,14 +18,25 @@ Source2:	%{name}.desktop
 Source3:	http://www.peazip.org/downloads/additional/peazip_additional_formats_plugin-2.LINUX.ALL.tar.gz
 BuildRequires:	dos2unix
 BuildRequires:	lazarus >= 1.2.0
+
+%if %{with gtk}
+BuildRequires:	gtk2-devel 
+BuildRequires:	pkgconfig(gdk-pixbuf-2.0)
+BuildRequires:	pango-devel
+BuildRequires:	cairo-devel
+%else
 BuildRequires:	qt4pas-devel
 BuildRequires:	qt-devel
 BuildRequires:	qtwebkit-devel
+%endif
+
 BuildRequires:	icoutils
 BuildRequires:	desktop-file-utils
 Requires:	p7zip p7zip-plugins
 Requires:	upx >= 3.09
 Requires:	desktop-file-utils
+Requires:	gdk-pixbuf2
+Requires:	pango
 Recommends:	unrar
 Recommends:	unace
 
@@ -37,12 +51,18 @@ chmod +w res/lang
 dos2unix readme*
 
 %build
+
+%if %{with gtk}
+WGT=gtk2
+%else
+WGT=qt
+%endif
+
 lazbuild --lazarusdir=%{_libdir}/lazarus \
 %ifarch x86_64
 	--cpu=x86_64 \
 %endif
-	--widgetset=qt \
-	-B project_peach.lpi project_pea.lpi project_gwrap.lpi
+	--widgetset=${WGT} -B project_peach.lpr project_pea.lpr project_gwrap.lpr
 
 %install
 install -d -m755 %{buildroot}%{_bindir}
@@ -53,15 +73,15 @@ cp %{S:1} %{buildroot}%{_datadir}/%{name}/res
 
 #install helper apps
 install -d -m755 %{buildroot}%{_datadir}/%{name}/res/{7z,upx}
-ln -s %{_bindir}/7z  %{buildroot}%{_datadir}/%{name}/res/7z
-ln -s %{_bindir}/upx  %{buildroot}%{_datadir}/%{name}/res/upx
+ln -sf %{_bindir}/7z  %{buildroot}%{_datadir}/%{name}/res/7z
+ln -sf %{_bindir}/upx  %{buildroot}%{_datadir}/%{name}/res/upx
 
 install pea %{buildroot}%{_datadir}/%{name}/res
-ln -s %{_datadir}/%{name}/res/pea %{buildroot}%{_bindir}/pea
+ln -sf %{_datadir}/%{name}/res/pea %{buildroot}%{_bindir}/pea
 install %{name} %{buildroot}%{_datadir}/%{name}
-ln -s %{_datadir}/%{name}/%{name} %{buildroot}%{_bindir}/%{name}
+ln -sf %{_datadir}/%{name}/%{name} %{buildroot}%{_bindir}/%{name}
 install pealauncher %{buildroot}%{_datadir}/%{name}/res
-ln -s %{_datadir}/%{name}/res/pealauncher %{buildroot}%{_bindir}/pealauncher
+ln -sf %{_datadir}/%{name}/res/pealauncher %{buildroot}%{_bindir}/pealauncher
 
 install -d -m755 %{buildroot}%{_datadir}/applications
 install -m 0644 %{S:2} %{buildroot}%{_datadir}/applications/
