@@ -35,8 +35,11 @@ BuildRequires:	desktop-file-utils
 Requires:	p7zip p7zip-plugins
 Requires:	upx >= 3.09
 Requires:	desktop-file-utils
+%if %{with gtk}
 Requires:	gdk-pixbuf2
 Requires:	pango
+Requires:	cairo
+%endif
 Recommends:	unrar
 Recommends:	unace
 
