@@ -6,12 +6,12 @@
 
 Summary:	File and archive manager
 Name:		peazip
-Version:	6.4.1
+Version:	6.5.0
 Release:	1%{?dist}
 License:	LGPLv3
 Group:          Applications/Archiving
 Url:		http://www.peazip.org/peazip-linux.html
-Source0:	http://download.sourceforge.net/%{name}/%{name}-%{version}.src.zip
+Source0:	http://download.sourceforge.net/peazip/%{name}-%{version}.src.zip
 # configure to run in users home appdata
 Source1:	altconf.txt
 Source2:	%{name}.desktop
@@ -136,6 +136,9 @@ fi
 
 
 %changelog
+
+* Wed Jan 24 2018 davidva <davidva AT tutanota DOT com> 6.5.0-1
+- Updated to 6.5.0-1
 
 * Wed Feb 15 2017 davidva <davidva AT tutanota DOT com> 6.4.1-1
 - Updated to 6.4.1-1
