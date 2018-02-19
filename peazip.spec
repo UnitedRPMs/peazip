@@ -6,7 +6,7 @@
 
 Summary:	File and archive manager
 Name:		peazip
-Version:	6.5.0
+Version:	6.5.1
 Release:	1%{?dist}
 License:	LGPLv3
 Group:          Applications/Archiving
@@ -136,6 +136,9 @@ fi
 
 
 %changelog
+
+* Mon Feb 19 2018 davidva <davidva AT tutanota DOT com> 6.5.1-1
+- Updated to 6.5.1-1
 
 * Wed Jan 24 2018 davidva <davidva AT tutanota DOT com> 6.5.0-1
 - Updated to 6.5.0-1
