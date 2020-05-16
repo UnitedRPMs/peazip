@@ -5,4 +5,5 @@ SPECS/*
 SRPMS/*
 peazip*.src.zip
 .directory
-peazip_additional_formats_plugin*.tar.gz
+*.tar.gz
+*.rpm

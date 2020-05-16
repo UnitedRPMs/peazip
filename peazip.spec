@@ -1,45 +1,41 @@
 %define debug_package %{nil}
+%global _missing_build_ids_terminate_build 0
 %global _iconsdir %{_datadir}/icons
 
-# BUILD GTK
-%bcond_without gtk
+# 
+%define _legacy_common_support 1
+
 
 Summary:	File and archive manager
 Name:		peazip
-Version:	6.8.1
+Version:	7.2.2
 Release:	7%{?dist}
 License:	LGPLv3
 Group:          Applications/Archiving
-Url:		http://www.peazip.org/peazip-linux.html
-Source0:	http://download.sourceforge.net/peazip/%{name}-%{version}.src.zip
+Url:		https://www.peazip.org/peazip-linux.html
+Source0:	https://github.com/giorgiotani/PeaZip/releases/download/7.2.2/%{name}-%{version}.src.zip
 # configure to run in users home appdata
 Source1:	altconf.txt
-Source2:	%{name}.desktop
-Source3:	http://www.peazip.org/downloads/additional/peazip_additional_formats_plugin-2.LINUX.ALL.tar.gz
+Source2:	https://sourceforge.net/projects/peazip/files/Resources/PeaZip%20Additional%20Formats%20Plugin/peazip_additional_formats_plugin-2.LINUX.ALL.tar.gz
+Patch0:         peazip-desktop.patch
+
 BuildRequires:	dos2unix
 BuildRequires:	lazarus >= 1.2.0
-
-%if %{with gtk}
-BuildRequires:	gtk2-devel 
-BuildRequires:	pkgconfig(gdk-pixbuf-2.0)
-BuildRequires:	pango-devel
-BuildRequires:	cairo-devel
-%else
-BuildRequires:	qt4pas-devel
-BuildRequires:	qt-devel
-BuildRequires:	qtwebkit-devel
-%endif
-
+BuildRequires:	qt5pas-devel
+#BuildRequires:	qt4pas-devel
+BuildRequires:  gcc-c++ 
+BuildRequires:  fpc 
+BuildRequires:  fpc-src 
+BuildRequires:  upx 
+BuildRequires:  kf5-filesystem
 BuildRequires:	icoutils
 BuildRequires:	desktop-file-utils
+BuildRequires:  p7zip
+
 Requires:	p7zip p7zip-plugins
 Requires:	upx >= 3.09
 Requires:	desktop-file-utils
-%if %{with gtk}
-Requires:	gdk-pixbuf2
-Requires:	pango
-Requires:	cairo
-%endif
+
 Recommends:	unrar
 Recommends:	unace
 
@@ -49,49 +45,49 @@ portable GUI for many Open Source technologies like 7-Zip, FreeArc, PAQ,
 UPX...
 
 %prep
-%setup -q -n %{name}-%{version}.src -a3
+%setup -q -n %{name}-%{version}.src -a2
+%patch0 -p1
 chmod +w res/lang
 dos2unix readme*
 
 %build
 
-%if %{with gtk}
-WGT=gtk2
-%else
-WGT=qt
-%endif
-
-lazbuild --lazarusdir=%{_libdir}/lazarus \
+lazbuild \
+	--lazarusdir=%{_libdir}/lazarus \
 %ifarch x86_64
 	--cpu=x86_64 \
 %endif
-	--widgetset=${WGT} -B project_peach.lpr project_pea.lpr project_gwrap.lpr
+	--widgetset=gtk2 \
+        --max-process-count=1 \
+	-B project_pea.lpi project_peach.lpi
+  
+  icotool -x -w 256 "res/icons/PeaZip.ico" -o peazip.png
 
 %install
-install -d -m755 %{buildroot}%{_bindir}
-install -d -m755 %{buildroot}%{_datadir}/%{name}
-rm -rf res/icons
-cp -r res %{buildroot}%{_datadir}/%{name}
-cp %{S:1} %{buildroot}%{_datadir}/%{name}/res
+mkdir -p %{buildroot}%{_bindir}
+mkdir -p %{buildroot}/%{_datadir}/peazip
+cp -r res %{buildroot}/%{_datadir}/peazip
+cp %{S:1} %{buildroot}/%{_datadir}/peazip/res
 
-#install helper apps
-install -d -m755 %{buildroot}%{_datadir}/%{name}/res/{7z,upx}
-ln -sf %{_bindir}/7z  %{buildroot}%{_datadir}/%{name}/res/7z
-ln -sf %{_bindir}/upx  %{buildroot}%{_datadir}/%{name}/res/upx
+mkdir -p %{buildroot}/%{_datadir}/peazip/res/7z
+mkdir -p %{buildroot}/%{_datadir}/peazip/res/upx
+ln -s %{_bindir}/7z  %{buildroot}/%{_datadir}/peazip/res/7z/7z
+ln -s %{_bindir}/upx  %{buildroot}/%{_datadir}/peazip/res/upx/upx
 
-install pea %{buildroot}%{_datadir}/%{name}/res
-ln -sf %{_datadir}/%{name}/res/pea %{buildroot}%{_bindir}/pea
-install %{name} %{buildroot}%{_datadir}/%{name}
-ln -sf %{_datadir}/%{name}/%{name} %{buildroot}%{_bindir}/%{name}
-install pealauncher %{buildroot}%{_datadir}/%{name}/res
-ln -sf %{_datadir}/%{name}/res/pealauncher %{buildroot}%{_bindir}/pealauncher
+install -m755 peazip %{buildroot}/%{_datadir}/peazip
+ln -s %{_datadir}/peazip/peazip %{buildroot}%{_bindir}/peazip
+install -m755 pea %{buildroot}/%{_datadir}/peazip/res
+ln -s %{_datadir}/peazip/res/pea %{buildroot}%{_bindir}/pea
 
-install -d -m755 %{buildroot}%{_datadir}/applications
-install -m 0644 %{S:2} %{buildroot}%{_datadir}/applications/
+install -D -m644 FreeDesktop_integration/peazip.desktop %{buildroot}%{_datadir}/applications/peazip.desktop
+install -D -m644 FreeDesktop_integration/peazip.png %{buildroot}%{_datadir}/pixmaps/peazip.png
 
-install -d -m755 %{buildroot}%{_iconsdir}/hicolor/256x256/apps
-icotool -x -i 1 -o %{buildroot}%{_iconsdir}/hicolor/256x256/apps/%{name}.png %{name}.ico
-rm -rf %{buildroot}%{_datadir}/%{name}/res/icons
+pushd FreeDesktop_integration/kde4-dolphin/usr/share/kde4/services/ServiceMenus
+mkdir -p %{buildroot}%{_datadir}/kservices5/ServiceMenus
+install -m644 *.desktop %{buildroot}%{_datadir}/kservices5/ServiceMenus
+popd
+
+
 
 # unrar
 install -d -m755 %{buildroot}%{_datadir}/%{name}/res/unrar
@@ -130,12 +126,16 @@ fi
 %files
 %doc readme copying.txt
 %{_bindir}/*
-%{_datadir}/icons/hicolor/*/apps/*.png
+%{_datadir}/pixmaps/peazip.png
 %{_datadir}/applications/*.desktop
+%{_datadir}/kservices5/ServiceMenus/
 %{_datadir}/%{name}/
 
 
 %changelog
+
+* Fri May 15 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 7.2.2-1
+- Updated to 7.2.2
 
 * Sun Jun 30 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 6.8.1-1
 - Updated to 6.8.1
