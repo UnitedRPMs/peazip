@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.peazip.peazip</id>
+  
+  <name>peazip</name>
+  <summary>File and archive manager</summary>
+  
+  <metadata_license>FSFAP</metadata_license>
+  <project_license>LGPL-3.0-or-later</project_license>
+  
+  <description>
+    <p>
+      PeaZip is a free cross-platform file archiver that provides a unified portable GUI for many Open Source technologies like 7-Zip, FreeArc, PAQ, UPX
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">peazip.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://www.peazip.org/peazip.png</image>
+    </screenshot>
+  </screenshots>
+</component>

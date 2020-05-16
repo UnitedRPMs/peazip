@@ -17,6 +17,7 @@ Source0:	https://github.com/giorgiotani/PeaZip/releases/download/7.2.2/%{name}-%
 # configure to run in users home appdata
 Source1:	altconf.txt
 Source2:	https://sourceforge.net/projects/peazip/files/Resources/PeaZip%20Additional%20Formats%20Plugin/peazip_additional_formats_plugin-2.LINUX.ALL.tar.gz
+Source3:	org.peazip.peazip.metainfo.xml
 Patch0:         peazip-desktop.patch
 
 BuildRequires:	dos2unix
@@ -106,6 +107,9 @@ mv -f %{_builddir}/%{name}-%{version}.src/lpaq %{buildroot}/%{_datadir}/%{name}/
 mv -f %{_builddir}/%{name}-%{version}.src/paq %{buildroot}/%{_datadir}/%{name}/res/ 
 mv -f %{_builddir}/%{name}-%{version}.src/quad %{buildroot}/%{_datadir}/%{name}/res/
 
+# Metainfo
+install -Dm 0644 %{S:3} %{buildroot}/%{_metainfodir}/org.peazip.peazip.metainfo.xml
+
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
@@ -128,6 +132,7 @@ fi
 %{_bindir}/*
 %{_datadir}/pixmaps/peazip.png
 %{_datadir}/applications/*.desktop
+%{_metainfodir}/org.peazip.peazip.metainfo.xml
 %{_datadir}/kservices5/ServiceMenus/
 %{_datadir}/%{name}/
 
