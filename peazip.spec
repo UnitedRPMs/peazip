@@ -8,12 +8,12 @@
 
 Summary:	File and archive manager
 Name:		peazip
-Version:	7.2.2
+Version:	7.3.0
 Release:	7%{?dist}
 License:	LGPLv3
 Group:          Applications/Archiving
 Url:		https://www.peazip.org/peazip-linux.html
-Source0:	https://github.com/giorgiotani/PeaZip/releases/download/7.2.2/%{name}-%{version}.src.zip
+Source0:	https://github.com/giorgiotani/PeaZip/releases/download/%{version}/%{name}-%{version}.src.zip
 # configure to run in users home appdata
 Source1:	altconf.txt
 Source2:	https://sourceforge.net/projects/peazip/files/Resources/PeaZip%20Additional%20Formats%20Plugin/peazip_additional_formats_plugin-2.LINUX.ALL.tar.gz
@@ -139,7 +139,10 @@ fi
 
 %changelog
 
-* Fri May 15 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 7.2.2-1
+* Mon May 18 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 7.3.0-7
+- Updated to 7.3.0
+
+* Fri May 15 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 7.2.2-7
 - Updated to 7.2.2
 
 * Sun Jun 30 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 6.8.1-1
