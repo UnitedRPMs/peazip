@@ -16,7 +16,7 @@ Url:		https://www.peazip.org/peazip-linux.html
 Source0:	https://github.com/giorgiotani/PeaZip/releases/download/%{version}/%{name}-%{version}.src.zip
 # configure to run in users home appdata
 Source1:	altconf.txt
-Source2:	https://sourceforge.net/projects/peazip/files/Resources/PeaZip%20Additional%20Formats%20Plugin/peazip_additional_formats_plugin-2.LINUX.ALL.tar.gz
+Source2:	https://github.com/UnitedRPMs/peazip/releases/download/7.4/peazip_additional_formats_plugin-2.LINUX.ALL.tar.gz
 Source3:	org.peazip.peazip.metainfo.xml
 Patch0:         peazip-desktop.patch
 
