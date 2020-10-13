@@ -8,7 +8,7 @@
 
 Summary:	File and archive manager
 Name:		peazip
-Version:	7.4.1
+Version:	7.4.2
 Release:	7%{?dist}
 License:	LGPLv3
 Group:          Applications/Archiving
@@ -138,6 +138,9 @@ fi
 
 
 %changelog
+
+* Sat Oct 10 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 7.4.2-7
+- Updated to 7.4.2
 
 * Mon Sep 14 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 7.4.1-7
 - Updated to 7.4.1
