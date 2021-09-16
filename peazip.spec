@@ -8,7 +8,7 @@
 
 Summary:	File and archive manager
 Name:		peazip
-Version:	8.1.0
+Version:	8.2.0
 Release:	7%{?dist}
 License:	LGPLv3
 Group:          Applications/Archiving
@@ -18,7 +18,7 @@ Source0:	https://github.com/giorgiotani/PeaZip/releases/download/%{version}/%{na
 Source1:	altconf.txt
 Source2:	https://github.com/UnitedRPMs/peazip/releases/download/7.4/peazip_additional_formats_plugin-2.LINUX.ALL.tar.gz
 Source3:	org.peazip.peazip.metainfo.xml
-Patch0:         peazip-desktop.patch
+#Patch0:         peazip-desktop.patch
 
 BuildRequires:	dos2unix
 BuildRequires:	lazarus >= 1.2.0
@@ -47,7 +47,7 @@ UPX...
 
 %prep
 %setup -q -n %{name}-%{version}.src -a2
-%patch0 -p1
+#patch0 -p1
 chmod +w res/lang
 dos2unix readme*
 
@@ -63,8 +63,10 @@ lazbuild \
 	-B project_pea.lpi project_peach.lpi
   
   icotool -x -w 256 "res/icons/PeaZip.ico" -o peazip.png
-
+  sed -i "s/^same/appdata/g" "res/altconf.txt"
+  
 %install
+
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}/%{_datadir}/peazip
 cp -r res %{buildroot}/%{_datadir}/peazip
@@ -80,10 +82,12 @@ ln -s %{_datadir}/peazip/peazip %{buildroot}%{_bindir}/peazip
 install -m755 pea %{buildroot}/%{_datadir}/peazip/res
 ln -s %{_datadir}/peazip/res/pea %{buildroot}%{_bindir}/pea
 
-install -D -m644 FreeDesktop_integration/peazip.desktop %{buildroot}%{_datadir}/applications/peazip.desktop
-install -D -m644 FreeDesktop_integration/peazip.png %{buildroot}%{_datadir}/pixmaps/peazip.png
+install -D -m644 res/batch/freedesktop_integration/peazip.desktop %{buildroot}%{_datadir}/applications/peazip.desktop
+install -D -m644 res/batch/freedesktop_integration/peazip.png %{buildroot}%{_datadir}/pixmaps/peazip.png
+install -D -m644 res/batch/freedesktop_integration/peazip.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/peazip.png
+install -D -m644 res/batch/freedesktop_integration/peazip_alt.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/peazip_alt.png
 
-pushd FreeDesktop_integration/kde4-dolphin/usr/share/kde4/services/ServiceMenus
+pushd res/batch/freedesktop_integration/KDE-servicemenus/KDE5-dolphin/
 mkdir -p %{buildroot}%{_datadir}/kservices5/ServiceMenus
 install -m644 *.desktop %{buildroot}%{_datadir}/kservices5/ServiceMenus
 popd
@@ -131,6 +135,7 @@ fi
 %doc readme copying.txt
 %{_bindir}/*
 %{_datadir}/pixmaps/peazip.png
+%{_datadir}/icons/hicolor/*/apps/peaz*.png
 %{_datadir}/applications/*.desktop
 %{_metainfodir}/org.peazip.peazip.metainfo.xml
 %{_datadir}/kservices5/ServiceMenus/
@@ -138,6 +143,9 @@ fi
 
 
 %changelog
+
+* Tue Sep 14 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 8.2.0-7
+- Updated to 8.2.0
 
 * Mon Aug 02 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 8.1.0-7
 - Updated to 8.1.0
