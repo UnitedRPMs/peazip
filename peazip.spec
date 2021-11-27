@@ -48,7 +48,7 @@ UPX...
 %prep
 %setup -q -n %{name}-%{version}.src -a2
 #patch0 -p1
-chmod +w res/lang
+#chmod +w res/lang
 dos2unix readme*
 
 %build
@@ -62,8 +62,8 @@ lazbuild \
         --max-process-count=1 \
 	-B project_pea.lpi project_peach.lpi
   
-  icotool -x -w 256 "res/icons/PeaZip.ico" -o peazip.png
-  sed -i "s/^same/appdata/g" "res/altconf.txt"
+  icotool -x -w 256 "res/share/icons/PeaZip.ico" -o peazip.png
+#  sed -i "s/^same/appdata/g" "res/altconf.txt"
   
 %install
 
@@ -82,12 +82,12 @@ ln -s %{_datadir}/peazip/peazip %{buildroot}%{_bindir}/peazip
 install -m755 pea %{buildroot}/%{_datadir}/peazip/res
 ln -s %{_datadir}/peazip/res/pea %{buildroot}%{_bindir}/pea
 
-install -D -m644 res/batch/freedesktop_integration/peazip.desktop %{buildroot}%{_datadir}/applications/peazip.desktop
-install -D -m644 res/batch/freedesktop_integration/peazip.png %{buildroot}%{_datadir}/pixmaps/peazip.png
-install -D -m644 res/batch/freedesktop_integration/peazip.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/peazip.png
-install -D -m644 res/batch/freedesktop_integration/peazip_alt.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/peazip_alt.png
+install -D -m644 res/share/batch/freedesktop_integration/peazip.desktop %{buildroot}%{_datadir}/applications/peazip.desktop
+install -D -m644 res/share/batch/freedesktop_integration/peazip.png %{buildroot}%{_datadir}/pixmaps/peazip.png
+install -D -m644 res/share/batch/freedesktop_integration/peazip.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/peazip.png
+install -D -m644 res/share/batch/freedesktop_integration/peazip_alt.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/peazip_alt.png
 
-pushd res/batch/freedesktop_integration/KDE-servicemenus/KDE5-dolphin/
+pushd res/share/batch/freedesktop_integration/KDE-servicemenus/KDE5-dolphin/
 mkdir -p %{buildroot}%{_datadir}/kservices5/ServiceMenus
 install -m644 *.desktop %{buildroot}%{_datadir}/kservices5/ServiceMenus
 popd
@@ -132,7 +132,7 @@ fi
 /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &> /dev/null || :
 
 %files
-%doc readme copying.txt
+%doc readme.txt copying_we.txt
 %{_bindir}/*
 %{_datadir}/pixmaps/peazip.png
 %{_datadir}/icons/hicolor/*/apps/peaz*.png
