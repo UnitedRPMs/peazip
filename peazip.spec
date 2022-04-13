@@ -8,7 +8,7 @@
 
 Summary:	File and archive manager
 Name:		peazip
-Version:	8.5.0
+Version:	8.6.0
 Release:	7%{?dist}
 License:	LGPLv3
 Group:          Applications/Archiving
@@ -85,7 +85,7 @@ ln -s %{_datadir}/peazip/res/pea %{buildroot}%{_bindir}/pea
 install -D -m644 res/share/batch/freedesktop_integration/peazip.desktop %{buildroot}%{_datadir}/applications/peazip.desktop
 install -D -m644 res/share/batch/freedesktop_integration/peazip.png %{buildroot}%{_datadir}/pixmaps/peazip.png
 install -D -m644 res/share/batch/freedesktop_integration/peazip.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/peazip.png
-install -D -m644 res/share/batch/freedesktop_integration/peazip_alt.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/peazip_alt.png
+#install -D -m644 res/share/batch/freedesktop_integration/peazip_alt.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/peazip_alt.png
 
 pushd res/share/batch/freedesktop_integration/KDE-servicemenus/KDE5-dolphin/
 mkdir -p %{buildroot}%{_datadir}/kservices5/ServiceMenus
@@ -143,6 +143,9 @@ fi
 
 
 %changelog
+
+* Wed Apr 13 2022 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 8.6.0-7
+- Updated to 8.6.0
 
 * Sat Apr 02 2022 Unitedrpms Project <unitedrpms AT protonmail DOT com> - 8.5.0-7
 - Updated to 8.5.0
